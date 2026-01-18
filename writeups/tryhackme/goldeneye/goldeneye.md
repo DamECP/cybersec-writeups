@@ -1,12 +1,14 @@
+<div align="center">
+
+# **WriteUp/Guide [FR] - TryHackMe : Goldeneye**
+
+</div>
+
 **Author:** [Damien D.](https://fr.linkedin.com/in/damien-d-9816121a9)
 
 ---
 
-<div align="center">
-
-# **Guide/WriteUp [FR] - TryHackMe : Goldeneye**
-
-</div>
+![goldeneye-0.png](images/goldeneye-0.png)
 
 
 Ayant grandi avec le jeu vidéo sur Nintendo64, il était logique que je me lance sur [cette room](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Ftryhackme%2Ecom%2Froom%2Fgoldeneye&urlhash=zALD&trk=article-ssr-frontend-pulse_little-text-block) qui est cette fois de difficulté medium ! Croisons les doigts pour que tout se passe bien ! 
@@ -21,7 +23,7 @@ Le texte s'affiche de manière dynamique et via F12, on voit qu'il y a un script
 
 
 
-![goldeneye-0.png](images/goldeneye-0.png)
+![goldeneye-1.png](images/goldeneye-1.png)
   
 
 
@@ -35,7 +37,7 @@ Ca commence pas mal ! On récupère potentiellement deux noms d'utilisateurs : B
 
 
 
-![goldeneye-1.png](images/goldeneye-1.png)
+![goldeneye-2.png](images/goldeneye-2.png)
   
 
 
@@ -49,13 +51,13 @@ Un petit passage par cyberchef plus tard, on a les identifiants complets pour Bo
 
 
 
-![goldeneye-2.png](images/goldeneye-2.png)
+![goldeneye-3.png](images/goldeneye-3.png)
   
 Une fois connecté, on obtient plus d'informations : Natalya et Boris sont tous les deux Supervisors et ils sont censés recevoir des mails des GNO (Goldeneye Network Operators) qui souhaitent suivre une formation leur permettant de devenir administrateurs. On nous dit également que le serveur mail (POP3) n'est pas sur le port habituel (110 ou 995 selon s'il est sécurisé ou non). C'est parti pour une énumération de ports avec Nmap et je vais en profiter pour faire un passage de Gobuster. 
 
 
 
-![goldeneye-3.png](images/goldeneye-3.png)
+![goldeneye-4.png](images/goldeneye-4.png)
   
 
 
@@ -69,7 +71,7 @@ Le scan gobuster ne donne rien de bien palpitant, j'y reviendrai plus tard si n�
 
 
 
-![goldeneye-4.png](images/goldeneye-4.png)
+![goldeneye-5.png](images/goldeneye-5.png)
   
 
 
@@ -83,7 +85,7 @@ Le port 55006 ne donnant rien, j'utilise Telnet sur le port 55007. L'identifiant
 
 
 
-![goldeneye-5.png](images/goldeneye-5.png)
+![goldeneye-6.png](images/goldeneye-6.png)
   
 
 
@@ -111,15 +113,15 @@ C'est déjà réglé depuis un moment mais en lisant les mails, on trouve d'autr
 
 
 
-![goldeneye-6.png](images/goldeneye-6.png)
-  
 ![goldeneye-7.png](images/goldeneye-7.png)
+  
+![goldeneye-8.png](images/goldeneye-8.png)
   
 En se connectant cette fois avec les identifiants de Natalya, on trouve de quoi se logger en tant que Xenia ! Et les amateurs et amatrices du jeu apprécieront la référence au RCPC90 ainsi que cette trahison de Boris... 
 
 
 
-![goldeneye-8.png](images/goldeneye-8.png)
+![goldeneye-9.png](images/goldeneye-9.png)
   
 
 
@@ -145,7 +147,7 @@ Sur la droite de la page, on voit un "admin" mais en fouillant un peu dans le co
 
 
 
-![goldeneye-9.png](images/goldeneye-9.png)
+![goldeneye-10.png](images/goldeneye-10.png)
   
 
 
@@ -159,7 +161,7 @@ On relance la même commande hydra et on trouve ce qu'on veut.
 
 
 
-![goldeneye-10.png](images/goldeneye-10.png)
+![goldeneye-11.png](images/goldeneye-11.png)
   
 
 
@@ -175,21 +177,21 @@ On revient sur telnet avec les credentials qu'on vient de trouver.
 
 
 
-![goldeneye-11.png](images/goldeneye-11.png)
+![goldeneye-12.png](images/goldeneye-12.png)
   
 Après s'être identifié sur le moodle avec ces nouveaux identifiants, on peut voir à droite qu'il y a un fichier partagé pour James. On y trouve une url qui devrait nous mener un peu plus loin. 
 
 
 
-![goldeneye-12.png](images/goldeneye-12.png)
+![goldeneye-13.png](images/goldeneye-13.png)
   
 Aaaaah ! Que de souvenirs ! Le fameux docteur nous donne donc une clé... En réalité, la clé est l'image elle-même. Vérifions ses métadonnées via exiftools... 
 
 
 
-![goldeneye-13.png](images/goldeneye-13.png)
-  
 ![goldeneye-14.png](images/goldeneye-14.png)
+  
+![goldeneye-15.png](images/goldeneye-15.png)
   
 
 
@@ -203,13 +205,13 @@ De la base... 64 (étonnant non ?) qui nous donne de quoi se logger en tant qu'a
 
 
 
-![goldeneye-15.png](images/goldeneye-15.png)
+![goldeneye-16.png](images/goldeneye-16.png)
   
 Pour la suite, ça devient un peu plus technique puisqu'on va exploiter un plugin pour obtenir un reverse shell. Heureusement, on nous guide en précisant le plugin mais si on cherche Aspell, on ne trouve rien. Il faut passer par la barre de recherche et j'utilise un oneliner python tiré du fameux [pentestmonkey](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fpentestmonkey%2Enet%2Fcheat-sheet%2Fshells%2Freverse-shell-cheat-sheet&urlhash=nPSS&trk=article-ssr-frontend-pulse_little-text-block). En même temps, je lance un listener netcat sur ma machine. 
 
 
 
-![goldeneye-16.png](images/goldeneye-16.png)
+![goldeneye-17.png](images/goldeneye-17.png)
   
 Ensuite je suis allé un  peu vite en besogne. J'ai tenté d'écrire un post et provoquer une correction automatique mais sans que je sache pourquoi, tout a planté. Tant et si bien que j'ai du relancer la machine complètement! Ca a été l'occasion de remarquer que le mot de passe admin était de nouveau une référence au jeu puisqu'il est sorti en hiver 1995. 
 
@@ -219,13 +221,13 @@ Donc, l'étape qui me manquait était d'activer le correcteur orthographique pou
 
 
 
-![goldeneye-17.png](images/goldeneye-17.png)
+![goldeneye-18.png](images/goldeneye-18.png)
   
 Et en effet, cette fois ça marche ! 
 
 
 
-![goldeneye-18.png](images/goldeneye-18.png)
+![goldeneye-19.png](images/goldeneye-19.png)
   
 
 
@@ -239,7 +241,7 @@ Le descriptif de la room invite à énumérer par soi-même ou à passer par un 
 
 
 
-![goldeneye-19.png](images/goldeneye-19.png)
+![goldeneye-20.png](images/goldeneye-20.png)
   
 Pour ascension de privilège, ça a été beaucoup plus compliqué. J'ai souhaité me débrouiller par moi-même en énumérant les binaires auxquels j'avais accès en croisant les doigts pour que GTFOBins m'aide à aller plus loin. Malheureusement, ça n'a rien donné. Idem, on ne peut plus s'identifier avec nos personnages et on en reste avec ce www-data qui ne nous aide pas beaucoup. Rien d'intéressant du côté de crontab non plus. 
 
@@ -249,7 +251,7 @@ Un peu par dépit, je suis la méthode demandée qui devrait m'orienter vers une
 
 
 
-![goldeneye-20.png](images/goldeneye-20.png)
+![goldeneye-21.png](images/goldeneye-21.png)
   
 On nous renvoie vers plusieurs exploits de la faille Overlayfs, ça me rassure un peu car cela signifie que mes méthodes basiques d'ascension de privilège n'étaient d'aucune utilité. On est sur quelque chose de bien plus technique que je n'aurais pas pu trouver par moi-même. La suite consiste à touver l'exploit parmi ceux proposés qui fonctionnera. Même méthode, je télécharge les différents scripts sur ma machine et les envoie un à un sur le serveur pour les essayer l'un après l'autre en croisant les doigts. 
 
@@ -263,19 +265,19 @@ Pour chaque exploit, je commence donc par compiler (cc <nomduscript> -o <nomcomp
 
 
 
-![goldeneye-21.png](images/goldeneye-21.png)
+![goldeneye-22.png](images/goldeneye-22.png)
   
 Et le flag est en fichier caché dans le répertoire root ! Mission accomplie ! 
 
 
 
-![goldeneye-22.png](images/goldeneye-22.png)
+![goldeneye-23.png](images/goldeneye-23.png)
   
 Et histoire de nous récompenser, on nous offre également un lien vers la fameuse scène finale ! 
 
 
 
-![goldeneye-23.png](images/goldeneye-23.png)
+![goldeneye-24.png](images/goldeneye-24.png)
   
 Alors ! Que tirer de cette room niveau intermédiaire ?  
 

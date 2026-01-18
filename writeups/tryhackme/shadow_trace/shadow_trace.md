@@ -1,20 +1,14 @@
+<div align="center">
+
+# **WriteUp/Guide [FR] - TryHackMe : Shadow Trace**
+
+</div>
+
 **Author:** [Damien D.](https://fr.linkedin.com/in/damien-d-9816121a9)
 
 ---
 
-
-  
-
 ![shadow_trace-0.png](images/shadow_trace-0.png)
-
-
-  
-
-WriteUp/Guide [FR] - TryHackMe : Shadow Trace
-
-
-
-
 
 
 J'ai plutôt tendance à travailler sur des rooms assez anciennes histoire d'avoir un petit filet de sécurité mais cette fois, je me suis lancé sur une qui vient de sortir : [https://tryhackme.com/room/shadowtrace](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Ftryhackme%2Ecom%2Froom%2Fshadowtrace&urlhash=aqyD&trk=article-ssr-frontend-pulse_little-text-block)  
@@ -27,8 +21,8 @@ Rien de bien méchant au programme, une simple analyse de malware qu'on peut fai
 
 
 
-What is the architecture of the binary file windows-update.exe? 
-What is the hash (sha-256) of the file windows-update.exe? 
+*What is the architecture of the binary file windows-update.exe?* 
+*What is the hash (sha-256) of the file windows-update.exe?* 
 
  
 
@@ -42,7 +36,7 @@ Première étape, se rendre dans le dossier sur le bureau et ouvrir le fichier w
   
 
 
-Identify the URL within the file to use it as an IOC 
+*Identify the URL within the file to use it as an IOC* 
 
  
 
@@ -56,13 +50,13 @@ L'url se trouve dans la section indicators.
   
 
 
-With the URL identified, can you spot a domain that can be used as an IOC? 
+*With the URL identified, can you spot a domain that can be used as an IOC?* 
 
  
 
 
 
-C'est là qu'entre en jeu strings. On peut scroller la section strings en cherchant l'hôte qu'on a découvert précédemment mais autant faire plus rapide. J'ouvre Powershell et me déplace dans le dossier SysinternalsSuite dans lequel on trouve l'outil. On indique le fichier à analyser et on fait un pipe avec findstr suivi du nom d'hôte. On trouve 3 résultats dont un qui va servir pour la question suivante. 
+C'est là qu'entre en jeu *strings*. On peut scroller la section strings en cherchant l'hôte qu'on a découvert précédemment mais autant faire plus rapide. J'ouvre Powershell et me déplace dans le dossier SysinternalsSuite dans lequel on trouve l'outil. On indique le fichier à analyser et on fait un pipe avec findstr suivi du nom d'hôte. On trouve 3 résultats dont un qui va servir pour la question suivante. 
 
 
 
@@ -70,7 +64,7 @@ C'est là qu'entre en jeu strings. On peut scroller la section strings en cherch
   
 
 
-Input the decoded flag from the suspicious domain 
+*Input the decoded flag from the suspicious domain* 
 
  
 
@@ -100,13 +94,13 @@ optin 3 (pénible mais qui a le mérite d'utiliser la machine hôte) : passer pa
   
 
 
-What library related to socket communication is loaded by the binary? 
+*What library related to socket communication is loaded by the binary?* 
 
  
 
 
 
-Encore une fois, l'information est très explicite puisqu'il existe une section libraries. 
+Encore une fois, l'information est très explicite puisqu'il existe une section *libraries.* 
 
 
 
@@ -118,7 +112,7 @@ On passe à la seconde partie où il faut analyser les alertes. Rien de bien mé
 
 
 
-Can you identify the malicious URL from the trigger by the process powershell.exe? 
+*Can you identify the malicious URL from the trigger by the process powershell.exe?* 
 
  
 
@@ -132,7 +126,7 @@ Ici, l'adresse se trouve dans la première entrée mais elle est encodée en bas
   
 
 
-Can you identify the malicious URL from the alert triggered by chrome.exe? 
+*Can you identify the malicious URL from the alert triggered by chrome.exe?* 
 
  
 
@@ -146,7 +140,7 @@ Cette fois, la réponse est dans la seconde entrée et elle prend la forme d'une
   
 
 
-What's the name of the file saved in the alert triggered by chrome.exe? 
+*What's the name of the file saved in the alert triggered by chrome.exe?* 
 
  
 

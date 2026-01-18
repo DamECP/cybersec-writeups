@@ -1,20 +1,14 @@
+<div align="center">
+
+# **WriteUp/Guide [FR] - TryHackMe : Easy Peasy**
+
+</div>
+
 **Author:** [Damien D.](https://fr.linkedin.com/in/damien-d-9816121a9)
 
 ---
 
-
-  
-
 ![easy_peasy-0.png](images/easy_peasy-0.png)
-
-
-  
-
-WriteUp [FR] - TryHackMe : Easy Peasy
-
-
-
-
 
 
 
